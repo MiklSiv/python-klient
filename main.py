@@ -9,7 +9,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.bt_server = QtWidgets.QPushButton(self.centralwidget)
-        self.bt_server.setGeometry(QtCore.QRect(190, 20, 111, 31))
+        self.bt_server.setGeometry(QtCore.QRect(190, 20, 200, 31))
         self.bt_server.setObjectName("bt_server")
         self.bt_send = QtWidgets.QPushButton(self.centralwidget)
         self.bt_send.setGeometry(QtCore.QRect(60, 80, 111, 31))
@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.bt_give = QtWidgets.QPushButton(self.centralwidget)
         self.bt_give.setGeometry(QtCore.QRect(60, 130, 111, 31))
         self.bt_give.setObjectName("bt_give")
-        self.text_give = QtWidgets.QTextBrowser(self.centralwidget)
+        self.text_give = QtWidgets.QLabel(self.centralwidget)
         self.text_give.setGeometry(QtCore.QRect(220, 130, 241, 31))
         self.text_give.setObjectName("text_give")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -30,33 +30,32 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.client = ''
+        self.fun()
 
-        self.add_server()
-        self.give()
 
-    def add_server(self):
+
+    def fun(self):
         self.bt_server.clicked.connect(lambda: self.server_vkl())
+        self.bt_give.clicked.connect(lambda: self.give_text())
+        self.bt_send.clicked.connect(lambda: self.send_text())
 
-    def give(self):
-        self.bt_send.clicked.connect(lambda: self.give_text())
 
     def server_vkl(self):
-
+        self.client = socket.socket()
         address_to_server = ('localhost', 8686)
-
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect(address_to_server)
+        #self.client.close()
 
     def send_text(self):
-
         self.client.send(self.text_send.toPlainText().encode('UTF-8'))
 
 
-
-    def give(self):
-        self.client, address = self.server.accept()
+    def give_text(self):
         data = self.client.recv(1024)
-        self.text_give.setText(data)
+
+        self.text_give.setText(data.decode('utf-8'))
+
+
 
 
 
@@ -66,6 +65,7 @@ class Ui_MainWindow(object):
         self.bt_server.setText(_translate("MainWindow", "подключиться к серверу"))
         self.bt_send.setText(_translate("MainWindow", "send"))
         self.bt_give.setText(_translate("MainWindow", "give"))
+        self.text_give.setText(_translate("MainWindow", "0"))
 
 
 def app():
