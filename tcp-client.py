@@ -1,3 +1,4 @@
+import random
 import socket
 import time
 import threading
@@ -21,8 +22,9 @@ def read_cl():
 
     count = 0
     while flag:
-        count += 1
-        data = "massege " + str(count)
+        a = str(time.time())
+        b = str(random.randint(0, 40))
+        data = a  + ',' + b
         client.send(data.encode('UTF-8'))
         time.sleep(1)
 
