@@ -19,13 +19,12 @@ flag = True
 def send_cl():
     global flag
     while flag:
-        print(1)
         try:
-            print('try1')
+            print ('try send')
             vvod = input()
             client.send(vvod.encode('UTF-8'))
         except:
-            print('ex')
+            print('ex send')
             pass
         time.sleep(1)
 
@@ -35,15 +34,18 @@ def read_cl():
     global flag
     while flag:
         try:
-            print('try2')
+            print('try read')
             data = client.recv(1024).decode('utf-8')
-            if data == 'server close':
+            print ('try read past')
+            if data == 'connecthione close':
                 print('recive command - "', data, '"')
                 flag = False
                 break
             else:
+                print('ex read')
                 print(data)
         except:
+
             pass
         time.sleep(1)
 
